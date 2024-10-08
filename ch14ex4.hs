@@ -13,7 +13,14 @@ instance Applicative Tree where
     pure x = Node Leaf x Leaf
     
     -- (<*>) :: Tree (a -> b) -> Tree a -> Tree b
-    Node _ g _ <*> Node l x r = Node Leaf (g x) Leaf
+    Node _ g _ <*> ty = fmap g ty
+
+instance Monad Tree where
+    -- (>>=) :: Tree a -> (a -> Tree b) -> Tree b
+    Leaf >>= _ = Leaf
+    (Node l x r) >>= g = case g x of
+                             Leaf -> Leaf
+                             Node _ y _ -> Node (l >>= g) y (r >>= g)
  
 instance Foldable Tree where
     -- fold :: Monoid a => Tree a -> a
