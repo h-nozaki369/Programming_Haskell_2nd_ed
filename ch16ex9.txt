@@ -1,0 +1,107 @@
+-- prove Applicative rules of Maybe
+-- pure id <*> x = x
+-- pure (g x) = pure g <*> pure x
+-- x <*> pure y = pure (\g -> g y) <*> x
+-- x <*> (y <*> z) = (pure (.) <*> x <*> y) <*> z
+
+-- pure :: a -> Maybe a
+-- pure = Just
+--
+-- (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
+-- _       <*> Nothing  = Nothing
+-- Nothing <*> _        = Nothing
+-- Just g  <*> (Just x) = Just (g x)
+
+-- case of Nothing
+-- prove pure id <*> Nothing = Nothing
+pure id <*> Nothing = Nothing
+    -- definition of <*>
+
+-- case of Just x
+-- prove pure id <*> (Just x) = Just x
+pure id <*> (Just x)
+    -- definition of pure
+= Just id <*> (Just x)
+    -- definition of <*>
+= Just (id x)
+    -- definition of id
+= Just x
+
+-- case of Nothing
+-- prove pure (g Nothing) = pure g <*> (pure Nothing)
+pure (g Nothing)
+    -- definition of pure
+= Just (g Nothing)
+    -- reverse apply <*>
+= Just g <*> (Just Nothing)
+    -- reverse apply pure
+= pure g <*> (pure Nothing)
+
+-- case of Just x
+-- prove pure (g (Just x)) = pure g <*> (pure (Just x))
+pure (g (Just x))
+    -- definition of pure
+= Just (g (Just x))
+    -- reverse apply <*>
+= Just g <*> (Just (Just x))
+    -- reverse apply pure
+= pure g <*> (pure (Just x))
+
+-- case of Nothing
+-- prove Nothing <*> pure y = pure (\g -> g y) <*> Nothing
+Nothing <*> pure y
+    -- definition of <*>
+= Nothing
+    -- reverse apply <*>
+= pure (\g -> g y) <*> Nothing
+
+-- case of Just x
+-- prove Just x <*> pure y = pure (\g -> g y) <*> (Just x)
+Just x <*> pure y
+    -- definition of pure
+= Just x <*> (Just y)
+    -- definition of <*>
+= Just (x y)
+    -- reverse apply lambda
+= Just ((\g -> g y) x)
+    -- reverse apply <*>
+= Just (\g -> g y) <*> (Just x)
+    -- reverse apply pure
+= pure (\g -> g y) <*> (Just x)
+
+-- case of Nothing
+-- prove Nothing <*> (y <*> z) = (pure (.) <*> Nothing <*> y) <*> z
+Nothing <*> (y <*> z)
+    -- definition of <*>
+= Nothing
+    -- reverse apply <*>
+= Nothing <*> z
+    -- reverse apply <*>
+= (pure (.) <*> Nothing <*> y) <*> z
+
+-- case of Just x
+-- prove Just x <*> (y <*> z) = (pure (.) <*> Just x <*> y) <*> z
+-- with assumption y = Just y' && z = Just z'
+Just x <*> (y <*> z)
+    -- assumption
+= Just x <*> (Just y' <*> Just z')
+    -- definition of <*>
+= Just x <*> (Just (y' z'))
+    -- definition of <*>
+= Just (x (y' z'))
+    -- definition of .
+= Just ((x . y') z'))
+    -- reverse apply <*>
+= Just (x . y') <*> Just z'
+    -- assumption
+= Just (x . y') <*> z
+    -- definition of .
+= Just (((.) x) y') <*> z
+    -- reverse apply <*>
+= (Just ((.) x) <*> Just y') <*> z
+    -- assumption
+= (Just ((.) x) <*> y) <*> z
+    -- reverse apply <*>
+= (Just (.) <*> Just x <*> y) <*> z
+    -- reverse apply pure
+= (pure (.) <*> Just x <*> y) <*> z

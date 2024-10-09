@@ -1,0 +1,65 @@
+-- prove Functor rules
+--     fmap id = id
+--     fmap (g . h) = fmap g . fmap h
+-- for
+-- data Tree a = Leaf a | Node (Tree a) (Tree a)
+--
+-- instance Functor Tree where
+--     -- fmap :: (a -> b) -> a -> b
+--     fmap g (Leaf x) = Leaf (g x)
+--     fmap g (Node l r) = Node (fmap g l) (fmap g r)
+
+-- case of Leaf
+-- prove fmap id (Leaf x) = id (Leaf x)
+fmap id (Leaf x)
+    -- definition of fmap
+= Leaf (id x)
+    -- definition of id
+= Leaf x
+    -- definition of id
+= id (Leaf x)
+
+-- case of Node
+-- prove fmap id (Node l r) = id (Node l r)
+-- with assumption fmap id l = id l && fmap id r = id r
+fmap id (Node l r)
+    -- definition of fmap
+= Node (fmap id l) (fmap id r)
+    -- assumption
+= Node (id l) (id r)
+    -- definition of id
+= Node l r
+    -- definition of id
+= id (Node l r)
+
+-- case of Leaf
+-- prove fmap (g . h) (Leaf x) = (fmap g . fmap h) (Leaf x)
+fmap (g . h) (Leaf x)
+    -- definition of fmap
+= Leaf ((g . h) x)
+    -- definition of .
+= Leaf (g (h x))
+    -- reverse apply fmap
+= fmap g (Leaf (h x))
+    -- reverse apply fmap
+= fmap g (fmap h (Leaf x))
+    -- definition of .
+= (fmap g . fmap h) (Leaf x)
+
+-- case of Node
+-- prove fmap (g . h) (Node l r) = (fmap g . fmap h) (Node l r)
+-- with assumption fmap (g . h) l = (fmap g . fmap h) l &&
+--                 fmap (g . h) r = (fmap g . fmap h) r
+fmap (g . h) (Node l r)
+    -- definition of fmap
+= Node (fmap (g . h) l) (fmap (g . h) r)
+    -- assumption
+= Node ((fmap g . fmap h) l) ((fmap g . fmap h) r)
+    -- definition of .
+= Node (fmap g (fmap h l)) (fmap g (fmap h r))
+    -- reverse apply fmap
+= fmap g (Node (fmap h l) (fmap h r))
+    -- reverse apply fmap
+= fmap g (fmap h (Node l r))
+    -- definition of .
+= (fmap g . fmap h) (Node l r))

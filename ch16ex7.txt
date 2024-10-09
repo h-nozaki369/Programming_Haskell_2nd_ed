@@ -1,0 +1,49 @@
+-- prove Functor rules of Maybe
+-- fmap id = id
+-- fmap (g . h) = fmap g . fmap h
+
+-- fmap :: (a -> b) -> Maybe a -> Maybe b
+-- fmap g Nothing = Nothing
+-- fmap g (Just x) = Just (g x)
+
+-- case of Nothing
+-- prove fmap id Nothing = id Nothing
+fmap id Nothing
+    -- definition of fmap
+= Nothing
+    -- reverse apply of id
+= id Nothing
+
+-- case of Just x
+-- prove fmap id (Just x) = Just x
+fmap id (Just x)
+    -- definition of fmap
+= Just (id x)
+    -- definition of id
+= Just x
+
+-- case of Nothing
+-- prove fmap (g . h) Nothing = (fmap g . fmap h) Nothing
+fmap (g . h) Nothing
+    -- definition of fmap
+= Nothing
+    -- reverse apply fmap
+= fmap g Nothing
+    -- reverse apply fmap
+= fmap g (fmap h Nothing)
+    -- definition of .
+= (fmap g . fmap h) Nothing
+
+-- case of Just x
+-- prove fmap (g . h) (Just x) = (fmap g . fmap h) (Just x)
+fmap (g . h) (Just x)
+    -- definition of fmap
+= Just ((g . h) x)
+    -- definition of .
+= Just (g (h x))
+    -- reverse apply fmap
+= fmap g (Just (h x))
+    -- reverse apply fmap
+= fmap g (fmap h (Just x))
+    -- definition of .
+= (fmap g . fmap h) (Just x)
