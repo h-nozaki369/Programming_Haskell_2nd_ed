@@ -1,0 +1,9 @@
+mult 3 4
+    -- reduce mult 3
+= ((\x -> (\y -> x * y)) 3) 4
+    -- apply lambda
+= (\y -> 3 * y) 4
+    -- apply lambda
+= 3 * 4
+    -- evaluate *
+= 12
