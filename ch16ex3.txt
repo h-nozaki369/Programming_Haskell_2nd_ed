@@ -1,0 +1,24 @@
+-- prove all (== x) (replicate n x) = True
+
+-- base case
+-- prove all (== x) (replicate 0 x) = True
+all (== x) (replicate 0 x)
+    -- apply replicate
+= all (== x) []
+    -- definition
+= True
+
+-- inductive case
+-- prove all (== x) (replicate (n+1) x) = True
+-- with assumption all (== x) (replicate n x) = True
+all (== x) (replicate (n+1) x)
+    -- apply replicate
+= all (== x) (x : (replicate n x))
+    -- definition
+= ((== x) x) && all (== x) (replicate n x)
+    -- assumption
+= ((== x) x) && True
+    -- logic theory
+= ((== x) x)
+    -- x should be same
+= True

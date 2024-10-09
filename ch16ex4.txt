@@ -1,0 +1,46 @@
+-- prove
+--   xs ++ [] = xs
+--   xs ++ (ys ++ zs) = (xs ++ ys) ++ zs
+-- with following properties
+--   [] ++ ys = ys
+--   (x:xs) ++ ys = x : (xs ++ ys)
+
+-- base case
+-- prove [] ++ [] = []
+[] ++ []
+    -- property 1
+= []
+
+-- inductive case
+-- prove (x:y:xs) ++ [] = (x:y:xs)
+-- with assumption (x:xs) ++ [] = (x:xs)
+(x:y:xs) ++ []
+    -- property 2
+= x : ((y:xs) ++ [])
+    -- assumption
+= x : (y:xs)
+    -- definition of cons
+= (x:y:xs)
+
+-- base case
+-- prove [] ++ (ys ++ zs) = ([] ++ ys) ++ zs
+prove [] ++ (ys ++ zs)
+    -- property 1
+= ys ++ zs
+    -- reverse apply property 1
+= ([] ++ ys) ++ zs
+
+-- inductive case
+-- (x:y:xs) ++ (ys ++ zs) = ((x:y:xs) ++ ys) ++ zs
+-- with assumption (x:xs) ++ (ys ++ zs) = ((x:xs) ++ ys) ++ zs
+(x:y:xs) ++ (ys ++ zs)
+    -- property 2
+= x : ((y:xs) ++ (ys ++ zs))
+    -- assumption
+= x : (((y:xs) ++ ys) ++ zs)
+    -- reverse apply property 1
+= (x:((y:xs) ++ ys)) ++ zs
+    -- reverse apply property 1
+= (x:(y:xs) ++ ys) ++ zs
+    -- definition of cons
+= ((x:y:xs) ++ ys) ++ zs

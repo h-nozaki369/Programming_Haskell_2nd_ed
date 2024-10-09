@@ -1,0 +1,18 @@
+-- base case
+-- prove add Zero m = add m Zero
+add Zero m
+    -- definition add Zero m = m
+= m
+    -- reverse apply n = add n Zero
+= add m Zero
+
+-- inductive case
+-- prove add (Succ n) m = add m (Succ n)
+-- with assumption add n m = add m n
+add (Succ n) m
+    -- definition add (Succ n) m
+= Succ (add n m)
+    -- assumption
+= Succ (add m n)
+    -- reverse apply Succ (add n m) = add n (Succ m)
+= add m (Succ n)
