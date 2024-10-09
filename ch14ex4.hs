@@ -8,6 +8,13 @@ instance Functor Tree where
     fmap g Leaf       = Leaf
     fmap g (Node l x r) = Node (fmap g l) (g x) (fmap g r)
 
+{-
+
+Following Applicative and Monad instances of "Tree a" are just my excersises.
+These are just examples of implementations. We should have other (and maybe better) implementations.
+
+-}
+
 instance Applicative Tree where
     -- pure :: a -> Tree a
     pure x = Node Leaf x Leaf
@@ -21,7 +28,7 @@ instance Monad Tree where
     (Node l x r) >>= g = case g x of
                              Leaf -> Leaf
                              Node _ y _ -> Node (l >>= g) y (r >>= g)
- 
+
 instance Foldable Tree where
     -- fold :: Monoid a => Tree a -> a
     fold Leaf         = mempty
