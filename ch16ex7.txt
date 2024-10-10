@@ -6,12 +6,13 @@
 -- fmap g Nothing = Nothing
 -- fmap g (Just x) = Just (g x)
 
+-- rule 1: fmap id = id
 -- case of Nothing
 -- prove fmap id Nothing = id Nothing
 fmap id Nothing
     -- definition of fmap
 = Nothing
-    -- reverse apply of id
+    -- unapply of id
 = id Nothing
 
 -- case of Just x
@@ -22,14 +23,15 @@ fmap id (Just x)
     -- definition of id
 = Just x
 
+-- rule 2: fmap (g . h) = fmap g . fmap h
 -- case of Nothing
 -- prove fmap (g . h) Nothing = (fmap g . fmap h) Nothing
 fmap (g . h) Nothing
     -- definition of fmap
 = Nothing
-    -- reverse apply fmap
+    -- unapply fmap
 = fmap g Nothing
-    -- reverse apply fmap
+    -- unapply fmap
 = fmap g (fmap h Nothing)
     -- definition of .
 = (fmap g . fmap h) Nothing
@@ -41,9 +43,9 @@ fmap (g . h) (Just x)
 = Just ((g . h) x)
     -- definition of .
 = Just (g (h x))
-    -- reverse apply fmap
+    -- unapply fmap
 = fmap g (Just (h x))
-    -- reverse apply fmap
+    -- unapply fmap
 = fmap g (fmap h (Just x))
     -- definition of .
 = (fmap g . fmap h) (Just x)

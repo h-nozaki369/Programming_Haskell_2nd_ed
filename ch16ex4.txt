@@ -27,7 +27,7 @@
 prove [] ++ (ys ++ zs)
     -- property 1
 = ys ++ zs
-    -- reverse apply property 1
+    -- unapply property 1
 = ([] ++ ys) ++ zs
 
 -- inductive case
@@ -38,9 +38,9 @@ prove [] ++ (ys ++ zs)
 = x : ((y:xs) ++ (ys ++ zs))
     -- assumption
 = x : (((y:xs) ++ ys) ++ zs)
-    -- reverse apply property 1
+    -- unapply property 1
 = (x:((y:xs) ++ ys)) ++ zs
-    -- reverse apply property 1
+    -- unapply property 1
 = (x:(y:xs) ++ ys) ++ zs
     -- definition of cons
 = ((x:y:xs) ++ ys) ++ zs

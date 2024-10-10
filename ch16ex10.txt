@@ -1,0 +1,97 @@
+It is not completed yet.
+
+-- prove Monad rules for []
+--   return x >>= f = f x
+--   mx >>= return = mx
+--   (mx >>= f) >>= g = mx >>= (\x -> (f x >>= g))
+
+-- instance Monad [] where
+--     -- return :: a -> [a]
+--     return x = [x]
+--
+--     -- (>>=) :: [a] -> (a -> [b]) -> [b]
+--     xs >>= g = [y | x <- xs, y <- g x]
+
+-- prove return x >>= f = f x
+return x >>= f
+    -- definition of return
+= [x] >>= f
+    -- definition of >>=
+= [y | x' <- [x], y <- f x']
+    -- apply generator <-
+= [y | y <- f x]
+= f x
+
+-- prove mx >>= return = mx
+-- base case
+[] >>= return
+    -- definition of >>=
+= [y | x <- [], y <- f x]
+    -- x is empty so result is empty also
+= []
+
+-- inductive case
+-- prove (x:xs) >>= return = (x:xs)
+-- with assumption xs >>= return = xs
+(x:xs) >>= return
+    -- definition of >>=
+= [y | x' <- (x:xs), y <- return x']
+    -- apply return
+= [y | x' <- (x:xs), y <- return x']
+= [y | x' <- [x], y <- return x'] ++ [y | x' <- xs, y <- return x']
+    -- unapply >>=
+= [y | x' <- [x], y <- return x'] ++ (xs >>= return)
+    -- apply return
+= [y | x' <- [x], y <- [x']] ++ (xs >>= return)
+    -- apply generator <-
+= [y | y <- [x]] ++ (xs >>= return)
+    -- apply generator <-
+= [x] ++ (xs >>= return)
+    -- assumption
+= [x] ++ xs
+    -- apply ++
+= (x:xs)
+
+-- prove (mx >>= f) >>= g = mx >>= (\x -> (f x >>= g))
+-- base case
+([] >>= f) >>= g
+    -- apply >>=
+= [y | x <- [], y <- f x] >>= g
+    -- x is empty so retusl is empty also
+= [] >>= g
+    -- apply >>=
+= [y | x <- [], y <- g x]
+    -- x is empty so retusl is empty also
+= []
+
+[] >>= (\x -> (f x >>= g))
+    -- apply >>=
+= [y | x <- [], y <- (\x -> (f x >>= g) x)]
+    -- x is empty so retusl is empty also
+= []
+
+-- inductive case
+-- prove ((x:xs) >>= f) >>= g = (x:xs) >>= (\x -> (f x >>= g))
+-- with assumption (xs >>= f) >>= g = xs >>= (\x -> (f x >>= g))
+((x:xs) >>= f) >>= g
+    -- apply >>=
+= [y | x' <- (x:xs), y <- f x'] >>= g
+= ([y | x' <- [x], y <- f x'] ++ [y | x' <- xs, y <- f x']) >>= g
+    -- apply generator <-
+= ([y | y <- f x] ++ [y | x' <- xs, y <- f x']) >>= g
+    -- apply generator <-
+= (f x ++ [y | x' <- xs, y <- f x']) >>= g
+    -- unapply >>=
+= ( f x ++ (xs >>= f)) >>= g
+    -- apply >>=
+= [y | x' <- f x ++ (xs >>= f), y <- g x']
+= [y | x' <- f x, y <- g x'] ++  [y | x' <- (xs >>= f), y <- g x']
+    -- unapply >>=
+= (f x >>= g) ++  [y | x' <- (xs >>= f), y <- g x']
+    -- unapply >>=
+= (f x >>= g) ++ ((xs >>= f) >>= g)
+
+= [y | x' <- (x:xs), y <- [y' | x'' <- f x', y' <- g x''])]
+= [y | x' <- (x:xs), y <- (f x' >>= g))]
+= [y | x' <- (x:xs), y <- (\x -> (f x >>= g) x')]
+= (x:xs) >>= (\x -> (f x >>= g))

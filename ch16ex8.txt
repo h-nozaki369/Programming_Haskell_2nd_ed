@@ -9,6 +9,7 @@
 --     fmap g (Leaf x) = Leaf (g x)
 --     fmap g (Node l r) = Node (fmap g l) (fmap g r)
 
+-- rule 1: fmap id = id
 -- case of Leaf
 -- prove fmap id (Leaf x) = id (Leaf x)
 fmap id (Leaf x)
@@ -32,6 +33,7 @@ fmap id (Node l r)
     -- definition of id
 = id (Node l r)
 
+-- rule 2: fmap (g . h) = fmap g . fmap h
 -- case of Leaf
 -- prove fmap (g . h) (Leaf x) = (fmap g . fmap h) (Leaf x)
 fmap (g . h) (Leaf x)
@@ -39,9 +41,9 @@ fmap (g . h) (Leaf x)
 = Leaf ((g . h) x)
     -- definition of .
 = Leaf (g (h x))
-    -- reverse apply fmap
+    -- unapply fmap
 = fmap g (Leaf (h x))
-    -- reverse apply fmap
+    -- unapply fmap
 = fmap g (fmap h (Leaf x))
     -- definition of .
 = (fmap g . fmap h) (Leaf x)
@@ -57,9 +59,9 @@ fmap (g . h) (Node l r)
 = Node ((fmap g . fmap h) l) ((fmap g . fmap h) r)
     -- definition of .
 = Node (fmap g (fmap h l)) (fmap g (fmap h r))
-    -- reverse apply fmap
+    -- unapply fmap
 = fmap g (Node (fmap h l) (fmap h r))
-    -- reverse apply fmap
+    -- unapply fmap
 = fmap g (fmap h (Node l r))
     -- definition of .
 = (fmap g . fmap h) (Node l r))

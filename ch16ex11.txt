@@ -1,0 +1,33 @@
+-- get equation comp' e c where
+--   comp' e c = comp e ++ c
+--   data Expr = Val Int | Add Expr Expr
+--   type Stack = [Int]
+--   type Code = [Op]
+--   data Op = PUSH Int | ADD deriving Show
+--   comp :: Expr -> Code
+--   comp (Val n)   = [PUSH n]
+--   comp (Add x y) = comp x ++ comp y ++ [ADD]
+
+-- case of Val
+comp' (Val n) c
+= comp (Val n) ++ c
+    -- apply comp
+= [PUSH n] ++ c
+= PUSH n : c
+
+-- case of Add
+comp' (Add x y) c
+= comp (Add x y) ++ c
+    -- apply comp
+= comp x ++ comp y ++ [ADD] ++ c
+    -- assumption
+= comp x ++ comp' y ([ADD] ++ c)
+    -- assumption
+= comp' x (comp' y ([ADD] ++ c))
+= comp' x (comp' y (ADD : c))
+
+-- substituting c with [] will get:
+comp :: Expr -> Code
+comp e = comp' e [] where
+    comp' (Val n)   [] = [PUSH n]
+    comp' (Add x y) [] = comp' x (comp' y [ADD])

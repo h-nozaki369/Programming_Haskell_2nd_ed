@@ -29,5 +29,5 @@ leaves (Node l r)
 = (nodes l + 1) + (nodes r + 1)
     -- assosiative rule of +
 = (nodes l + nodes r + 1) + 1
-    -- reverse apply nodes
+    -- unapply nodes
 = nodes (Node l r) + 1

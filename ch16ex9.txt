@@ -12,6 +12,7 @@
 -- Nothing <*> _        = Nothing
 -- Just g  <*> (Just x) = Just (g x)
 
+-- rule 1: pure id <*> x = x
 -- case of Nothing
 -- prove pure id <*> Nothing = Nothing
 pure id <*> Nothing = Nothing
@@ -27,14 +28,15 @@ pure id <*> (Just x)
     -- definition of id
 = Just x
 
+-- rule 2: pure (g x) = pure g <*> pure x
 -- case of Nothing
 -- prove pure (g Nothing) = pure g <*> (pure Nothing)
 pure (g Nothing)
     -- definition of pure
 = Just (g Nothing)
-    -- reverse apply <*>
+    -- unapply <*>
 = Just g <*> (Just Nothing)
-    -- reverse apply pure
+    -- unapply pure
 = pure g <*> (pure Nothing)
 
 -- case of Just x
@@ -42,17 +44,18 @@ pure (g Nothing)
 pure (g (Just x))
     -- definition of pure
 = Just (g (Just x))
-    -- reverse apply <*>
+    -- unapply <*>
 = Just g <*> (Just (Just x))
-    -- reverse apply pure
+    -- unapply pure
 = pure g <*> (pure (Just x))
 
+-- rule 3: x <*> pure y = pure (\g -> g y) <*> x
 -- case of Nothing
 -- prove Nothing <*> pure y = pure (\g -> g y) <*> Nothing
 Nothing <*> pure y
     -- definition of <*>
 = Nothing
-    -- reverse apply <*>
+    -- unapply <*>
 = pure (\g -> g y) <*> Nothing
 
 -- case of Just x
@@ -62,21 +65,22 @@ Just x <*> pure y
 = Just x <*> (Just y)
     -- definition of <*>
 = Just (x y)
-    -- reverse apply lambda
+    -- unapply lambda
 = Just ((\g -> g y) x)
-    -- reverse apply <*>
+    -- unapply <*>
 = Just (\g -> g y) <*> (Just x)
-    -- reverse apply pure
+    -- unapply pure
 = pure (\g -> g y) <*> (Just x)
 
+-- rule 4: x <*> (y <*> z) = (pure (.) <*> x <*> y) <*> z
 -- case of Nothing
 -- prove Nothing <*> (y <*> z) = (pure (.) <*> Nothing <*> y) <*> z
 Nothing <*> (y <*> z)
     -- definition of <*>
 = Nothing
-    -- reverse apply <*>
+    -- unapply <*>
 = Nothing <*> z
-    -- reverse apply <*>
+    -- unapply <*>
 = (pure (.) <*> Nothing <*> y) <*> z
 
 -- case of Just x
@@ -91,17 +95,17 @@ Just x <*> (y <*> z)
 = Just (x (y' z'))
     -- definition of .
 = Just ((x . y') z'))
-    -- reverse apply <*>
+    -- unapply <*>
 = Just (x . y') <*> Just z'
     -- assumption
 = Just (x . y') <*> z
     -- definition of .
 = Just (((.) x) y') <*> z
-    -- reverse apply <*>
+    -- unapply <*>
 = (Just ((.) x) <*> Just y') <*> z
     -- assumption
 = (Just ((.) x) <*> y) <*> z
-    -- reverse apply <*>
+    -- unapply <*>
 = (Just (.) <*> Just x <*> y) <*> z
-    -- reverse apply pure
+    -- unapply pure
 = (pure (.) <*> Just x <*> y) <*> z

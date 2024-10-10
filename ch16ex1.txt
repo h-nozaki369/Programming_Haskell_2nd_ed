@@ -3,7 +3,7 @@
 add Zero (Succ m)
     -- definition add Zero m = m
 = Succ m
-    -- reverse apply m = add Zero m
+    -- unapply m = add Zero m
 = Succ (add Zero m)
 
 -- inductive case
@@ -14,5 +14,5 @@ add (Succ n) (Succ m)
 = Succ (add n (Succ m))
     -- assumption add n (Succ m) = Succ (add n m)
 = Succ (Succ (add n m))
-    -- reverse apply Succ (add n m) = add (Succ n) m
+    -- unapply Succ (add n m) = add (Succ n) m
 = Succ (add (Succ n) m)
