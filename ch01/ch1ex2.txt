@@ -1,0 +1,1 @@
+Numbers of elements in [x] is just one and the elements is x. So, sum of x always equal to x.

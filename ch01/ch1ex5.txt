@@ -1,0 +1,1 @@
+If <= is qsort is chanaged to < and list contains same values, these are not shown in the result.
