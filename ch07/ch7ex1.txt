@@ -1,0 +1,2 @@
+[f x | x <- xs, p x]
+= filter p $ map f xs
